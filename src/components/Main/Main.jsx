@@ -40,6 +40,8 @@ const Main = () => {
 		}
 	}, [selected, dispatch, value, arg, argValue]);
 
+	useEffect(() => {}, [selected, setSelected]);
+
 	return (
 		<Stack flexDirection="column" gap={2} width="200px">
 			{selected.length === 0 ? (
@@ -69,6 +71,8 @@ const Main = () => {
 							selected={selected}
 							handleChange={handleChange}
 							method="none"
+							id={1}
+							k={undefined}
 						/>
 					)}
 					<Button

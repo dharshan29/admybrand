@@ -5,7 +5,7 @@ import Constant from "../../Constant/Constant";
 import SelArgument from "../../SelArgument/SelArgument";
 import Operators from "../Operators";
 
-const Entry = ({ entry, setOptions, oper }) => {
+const Entry = ({ entry, setOptions, oper, id, k }) => {
 	const arg = useSelector((state) => state.argument.arg);
 	const [select, setSelect] = useState("");
 
@@ -86,6 +86,8 @@ const Entry = ({ entry, setOptions, oper }) => {
 					selected={select}
 					handleChange={handleChange}
 					method={oper}
+					id={id + 1}
+					k={k}
 				/>
 			)}
 		</Box>

@@ -11,22 +11,8 @@ export const resultSlice = createSlice({
 		addResult: (state, action) => {
 			state.result = action.payload;
 		},
-		// operatorsResult: (state, action) => {
-		// 	const { value, operator } = action.payload;
-		// 	console.log(value, operator);
-		// 	const oldresult = state.result;
-		// 	if (oldresult === undefined) {
-		// 		state.result = value;
-		// 	} else {
-		// 		if (operator === "and") {
-		// 			state.result = state.result && value;
-		// 		} else if (operator === "or") {
-		// 			state.result = state.result || value;
-		// 		}
-		// 	}
-		// },
 	},
 });
 
 export default resultSlice.reducer;
-export const { addResult, operatorsResult } = resultSlice.actions;
+export const { addResult } = resultSlice.actions;

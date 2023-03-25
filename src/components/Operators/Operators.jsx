@@ -1,7 +1,10 @@
 import { Box, Button, MenuItem, Select, Stack } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { operatorsResult } from "../../features/argument/resultSlice";
+import {
+	addResult,
+	operatorsResult,
+} from "../../features/argument/resultSlice";
 import Entry from "./Entry/Entry";
 
 const andOperation = (arr) => {
@@ -45,7 +48,7 @@ const orOperation = (arr) => {
 	return result;
 };
 
-const Operators = ({ selected, handleChange, method }) => {
+const Operators = ({ selected, handleChange, method, id, k }) => {
 	// const files = {
 	// 	// children: [
 	// 	// 	{
@@ -62,7 +65,7 @@ const Operators = ({ selected, handleChange, method }) => {
 		{ id: 2, method: "", value: "" },
 	];
 
-	// const dispatch = useDispatch();
+	const dispatch = useDispatch();
 	// const oldresult = useSelector((state) => state.result.result);
 
 	const [options, setOptions] = useState(option);
@@ -76,10 +79,6 @@ const Operators = ({ selected, handleChange, method }) => {
 		}
 	}, [options, selected]);
 
-	// useEffect(() => {
-	// 	dispatch(operatorsResult({ value: result, operator: selected }));
-	// }, [selected, dispatch, result, oldresult]);
-
 	const handleOptions = () => {
 		setOptions([...options, { id: options.length + 1, method: "", value: "" }]);
 	};
@@ -88,6 +87,26 @@ const Operators = ({ selected, handleChange, method }) => {
 		const items = options.filter((item) => item.id !== id);
 		setOptions(items);
 	};
+
+	// let j =
+	// method === "none" ? result : method === "and" ? k && result : k || result;
+
+	let j =
+		method === "none"
+			? result
+			: method === "and"
+			? result === undefined
+				? k
+				: k && result
+			: result === undefined
+			? k
+			: k || result;
+
+	dispatch(addResult(j));
+
+	useEffect(() => {
+		dispatch(addResult(j));
+	}, [j, k, dispatch, result, method]);
 
 	return (
 		<Stack flexDirection={"column"}>
@@ -108,7 +127,13 @@ const Operators = ({ selected, handleChange, method }) => {
 			<Box sx={{ marginLeft: "20px" }}>
 				{options.map((entry) => (
 					<Stack flexDirection="row" gap={1} marginBottom={1} key={entry.id}>
-						<Entry entry={entry} setOptions={setOptions} oper={selected} />
+						<Entry
+							entry={entry}
+							setOptions={setOptions}
+							oper={selected}
+							id={id}
+							k={j}
+						/>
 						<Button
 							sx={{ height: "fit-content" }}
 							variant="contained"
