@@ -1,8 +1,51 @@
 import { Box, Button, MenuItem, Select, Stack } from "@mui/material";
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { operatorsResult } from "../../features/argument/resultSlice";
 import Entry from "./Entry/Entry";
 
-const Operators = ({ selected, handleChange }) => {
+const andOperation = (arr) => {
+	let result = true;
+	let validValues = 0;
+	if (arr.length === 0) {
+		return undefined;
+	}
+	for (let i = 0; i < arr.length; i++) {
+		const value = arr[i]?.value;
+		if (value === undefined || value === "") {
+			continue;
+		}
+		validValues++;
+		result = result && value;
+	}
+	if (validValues === 0) {
+		return undefined;
+	}
+	return result;
+};
+
+const orOperation = (arr) => {
+	let result = false;
+	let validValues = 0;
+	if (arr.length === 0) {
+		return undefined;
+	}
+	for (let i = 0; i < arr.length; i++) {
+		const value = arr[i]?.value;
+		if (value === undefined || value === "") {
+			continue; // skip empty or undefined values
+		}
+		validValues++;
+		result = result || value;
+	}
+	if (validValues === 0) {
+		return undefined;
+	}
+
+	return result;
+};
+
+const Operators = ({ selected, handleChange, method }) => {
 	// const files = {
 	// 	// children: [
 	// 	// 	{
@@ -15,20 +58,30 @@ const Operators = ({ selected, handleChange }) => {
 	// };
 
 	const option = [
-		{ id: "1", method: "" },
-		{ id: "2", method: "" },
+		{ id: 1, method: "", value: "" },
+		{ id: 2, method: "", value: "" },
 	];
 
-	const [options, setOptions] = useState(option);
+	// const dispatch = useDispatch();
+	// const oldresult = useSelector((state) => state.result.result);
 
-	// const [result, setResult] = useState(undefined);
+	const [options, setOptions] = useState(option);
+	const [result, setResult] = useState(undefined);
+
+	useEffect(() => {
+		if (selected === "and") {
+			setResult(andOperation(options));
+		} else if (selected === "or") {
+			setResult(orOperation(options));
+		}
+	}, [options, selected]);
 
 	// useEffect(() => {
-	// 	options.forEach((item) => console.log(item.method));
-	// }, [options]);
+	// 	dispatch(operatorsResult({ value: result, operator: selected }));
+	// }, [selected, dispatch, result, oldresult]);
 
 	const handleOptions = () => {
-		setOptions([...options, { id: options.length + 1, method: "" }]);
+		setOptions([...options, { id: options.length + 1, method: "", value: "" }]);
 	};
 
 	const deleteOption = (id) => {
@@ -55,7 +108,7 @@ const Operators = ({ selected, handleChange }) => {
 			<Box sx={{ marginLeft: "20px" }}>
 				{options.map((entry) => (
 					<Stack flexDirection="row" gap={1} marginBottom={1} key={entry.id}>
-						<Entry entry={entry} setOptions={setOptions} />
+						<Entry entry={entry} setOptions={setOptions} oper={selected} />
 						<Button
 							sx={{ height: "fit-content" }}
 							variant="contained"

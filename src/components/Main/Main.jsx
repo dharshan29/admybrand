@@ -1,18 +1,47 @@
-import { Box, Button, MenuItem, Select, Stack } from "@mui/material";
-import React, { useState } from "react";
+import { Button, MenuItem, Select, Stack, Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addResult } from "../../features/argument/resultSlice";
 import Constant from "../Constant/Constant";
 import Operators from "../Operators/Operators";
 import SelArgument from "../SelArgument/SelArgument";
 
 const Main = () => {
+	const arg = useSelector((state) => state.argument.arg);
+	const result = useSelector((state) => state.result.result);
+
+	const dispatch = useDispatch();
+
 	const [selected, setSelected] = useState("");
+	const [value, setValue] = useState(true);
+
+	const [argValue, setArgValue] = useState(arg[0].id);
 
 	const handleChange = (e) => {
 		setSelected(e.target.value);
 	};
 
+	const handleChangeValue = (value) => {
+		setValue(value);
+	};
+
+	const handleChangeArg = (value) => {
+		setArgValue(value);
+	};
+
+	useEffect(() => {
+		if (selected === "constant") {
+			dispatch(addResult(value));
+		} else if (selected === "") {
+			dispatch(addResult(undefined));
+		} else if (selected === "argument") {
+			const item = arg.find((item) => item.id === argValue)?.value;
+			dispatch(addResult(item));
+		}
+	}, [selected, dispatch, value, arg, argValue]);
+
 	return (
-		<Box>
+		<Stack flexDirection="column" gap={2} width="200px">
 			{selected.length === 0 ? (
 				<Select
 					id="simple-select"
@@ -29,12 +58,19 @@ const Main = () => {
 				</Select>
 			) : (
 				<Stack sx={{ flexDirection: "row", gap: "5px" }}>
-					{selected === "constant" && <Constant />}
-					{selected === "argument" && <SelArgument />}
-					{selected === "and" && (
-						<Operators selected={selected} handleChange={handleChange} />
+					{selected === "constant" && (
+						<Constant value={value} handleChange={handleChangeValue} />
 					)}
-					{selected === "or" && <Operators />}
+					{selected === "argument" && (
+						<SelArgument value={argValue} handleChange={handleChangeArg} />
+					)}
+					{(selected === "and" || selected === "or") && (
+						<Operators
+							selected={selected}
+							handleChange={handleChange}
+							method="none"
+						/>
+					)}
 					<Button
 						sx={{ height: "fit-content" }}
 						variant="contained"
@@ -44,7 +80,15 @@ const Main = () => {
 					</Button>
 				</Stack>
 			)}
-		</Box>
+			<Typography variant="h5">
+				result:{" "}
+				{result === undefined
+					? "undefined"
+					: result === true
+					? "true"
+					: "false"}
+			</Typography>
+		</Stack>
 	);
 };
 

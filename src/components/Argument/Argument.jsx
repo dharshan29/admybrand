@@ -41,8 +41,8 @@ const Argument = () => {
 							label="Age"
 							onChange={(e) => handleValue(e, item.id)}
 						>
-							<MenuItem value="true">True</MenuItem>
-							<MenuItem value="false">False</MenuItem>
+							<MenuItem value={true}>True</MenuItem>
+							<MenuItem value={false}>False</MenuItem>
 						</Select>
 					</Stack>
 				))}

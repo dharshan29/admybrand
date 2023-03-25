@@ -1,13 +1,12 @@
 import { Box, MenuItem, Select } from "@mui/material";
-import React, { useState } from "react";
+import React from "react";
 
-const Constant = () => {
-	const [value, setValue] = useState(true);
+const Constant = ({ value, handleChange }) => {
 	return (
 		<Box>
-			<Select value={value} onChange={(e) => setValue(e.target.value)}>
-				<MenuItem value="true">True</MenuItem>
-				<MenuItem value="false">False</MenuItem>
+			<Select value={value} onChange={(e) => handleChange(e.target.value)}>
+				<MenuItem value={true}>True</MenuItem>
+				<MenuItem value={false}>False</MenuItem>
 			</Select>
 		</Box>
 	);
