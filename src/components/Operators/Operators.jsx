@@ -121,7 +121,7 @@ const Operators = ({ selected, handleChange, method, id, k }) => {
 						/>
 						<Button
 							sx={{ height: "fit-content" }}
-							variant="outlined"
+							variant="contained"
 							onClick={() => deleteOption(entry.id)}
 						>
 							x
