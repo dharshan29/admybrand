@@ -1,10 +1,7 @@
 import { Box, Button, MenuItem, Select, Stack } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-	addResult,
-	operatorsResult,
-} from "../../features/argument/resultSlice";
+import { useDispatch } from "react-redux";
+import { addResult } from "../../features/argument/resultSlice";
 import Entry from "./Entry/Entry";
 
 const andOperation = (arr) => {
@@ -49,24 +46,12 @@ const orOperation = (arr) => {
 };
 
 const Operators = ({ selected, handleChange, method, id, k }) => {
-	// const files = {
-	// 	// children: [
-	// 	// 	{
-	// 	id: 1,
-	// 	name: "add",
-	// 	options: ["options1", "options2"],
-	// 	// children: [{ name: "option1" }],
-	// 	// 	},
-	// 	// ],
-	// };
-
 	const option = [
 		{ id: 1, method: "", value: "" },
 		{ id: 2, method: "", value: "" },
 	];
 
 	const dispatch = useDispatch();
-	// const oldresult = useSelector((state) => state.result.result);
 
 	const [options, setOptions] = useState(option);
 	const [result, setResult] = useState(undefined);
@@ -136,7 +121,7 @@ const Operators = ({ selected, handleChange, method, id, k }) => {
 						/>
 						<Button
 							sx={{ height: "fit-content" }}
-							variant="contained"
+							variant="outlined"
 							onClick={() => deleteOption(entry.id)}
 						>
 							x

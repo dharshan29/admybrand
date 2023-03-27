@@ -26,17 +26,19 @@ const Argument = () => {
 	return (
 		<Stack sx={{ width: "250px", gap: "20px" }}>
 			<Box>
-				{arg.map((item) => (
+				{arg.map((item, index) => (
 					<Stack sx={{ flexDirection: "row", gap: "5px" }} key={item.id}>
 						<TextField
 							id="outlined-basic"
 							variant="outlined"
+							data-testid={`testfield-${index}`}
 							value={item.name}
 							onChange={(e) => handleChange(e, item.id)}
 						/>
 						<Select
 							labelId="demo-simple-select-label"
 							id="demo-simple-select"
+							data-testid={`selectfield-${index}`}
 							value={item.value}
 							label="Age"
 							onChange={(e) => handleValue(e, item.id)}
